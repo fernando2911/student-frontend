@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import useAuthStore from '../../store/authStore';
+import useAuthStore from '../../store/useAuthStore';
 import logo from '../../assets/logo-white.svg'
 
 const user = {
