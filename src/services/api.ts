@@ -1,21 +1,28 @@
 import axios from "axios";
-
-export interface ApiResponse<T> {
-  data: T;
-  status: number;
-}
-
-const baseUrl = "http://localhost:8080/api"
+import { jwtDecode } from "jwt-decode";
+import { API_BASE } from "../config/globals";
 
 const api = axios.create({
   timeout: 60000,
-  baseURL: baseUrl,
+  baseURL: API_BASE,
 });
 
 api.interceptors.request.use((config) => {
   const token = sessionStorage.getItem('token');
   if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
+    const decodedToken = jwtDecode(token);
+    if (decodedToken && typeof decodedToken.exp === "number") {
+      const isTokenExpired = (decodedToken.exp * 1000) < Date.now();
+
+      if (!isTokenExpired) {
+        config.headers['Authorization'] = 'Bearer ' + token;
+      } else {
+        sessionStorage.removeItem('token');
+        window.location.href = '/login'; 
+      }
+    } else {
+      sessionStorage.removeItem('token');
+    }
   }
   return config;
 }, (error) => {
