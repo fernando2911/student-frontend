@@ -1,7 +1,7 @@
 import create from 'zustand';
 
-import { AuthState, Credentials } from '../@types/auth';
-import api from '../services/api';
+import { AuthState, Credentials } from '../../@types/auth';
+import api from '../../services/api';
 
 const useAuthStore = create<AuthState>(set => ({
   responseWithErrors: false,
